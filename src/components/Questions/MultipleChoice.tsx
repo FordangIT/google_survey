@@ -1,7 +1,12 @@
 import { FaRegCircle } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { addOption, removeOption } from "../../redux/slices/optionSlice";
+import {
+  addOption,
+  removeOption,
+  updateOptionValue,
+} from "../../redux/slices/optionSlice";
+import { ChangeEvent } from "react";
 function MultipleChoice() {
   const dispatch = useDispatch();
   const options = useSelector((state: RootState) => state.option.options);
@@ -18,11 +23,26 @@ function MultipleChoice() {
     dispatch(removeOption(index));
   };
 
+  const handleOptionChange = (
+    event: ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => {
+    const newValue: string = event.target.value;
+    dispatch(updateOptionValue({ index, value: newValue }));
+  };
   return (
     <>
-      {options.map((_, index: number) => (
+      {options.map((option, index: number) => (
         <div key={index}>
-          <FaRegCircle /> 옵션
+          <div className="flex">
+            <FaRegCircle />
+            <input
+              type="text"
+              placeholder="옵션"
+              value={option.value}
+              onChange={(e) => handleOptionChange(e, option.index)}
+            ></input>
+          </div>
           <div onClick={() => handlerRemoveOption(index)}>삭제버튼</div>
         </div>
       ))}

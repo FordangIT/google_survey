@@ -3,6 +3,7 @@ import { produce } from "immer";
 
 interface Option {
   index: number;
+  value: string; // Each option will have a value
 }
 
 interface OptionState {
@@ -10,7 +11,7 @@ interface OptionState {
 }
 
 const initialState: OptionState = {
-  options: [{ index: 1 }],
+  options: [{ index: 1, value: "" }], // Initial value set as an empty string
 };
 
 export const optionSlice = createSlice({
@@ -19,7 +20,7 @@ export const optionSlice = createSlice({
   reducers: {
     addOption: (state, action: PayloadAction<{ index: number }>) => {
       return produce(state, (draftState) => {
-        draftState.options.push(action.payload);
+        draftState.options.push({ index: action.payload.index, value: "" });
       });
     },
     removeOption: (state, action: PayloadAction<number>) => {
@@ -27,8 +28,22 @@ export const optionSlice = createSlice({
         draftState.options.splice(action.payload, 1);
       });
     },
+    updateOptionValue: (
+      state,
+      action: PayloadAction<{ index: number; value: string }>,
+    ) => {
+      return produce(state, (draftState) => {
+        const optionToUpdate = draftState.options.find(
+          (opt) => opt.index === action.payload.index,
+        );
+        if (optionToUpdate) {
+          optionToUpdate.value = action.payload.value;
+        }
+      });
+    },
   },
 });
 
-export const { addOption, removeOption } = optionSlice.actions;
+export const { addOption, removeOption, updateOptionValue } =
+  optionSlice.actions;
 export default optionSlice.reducer;
