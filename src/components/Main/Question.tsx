@@ -77,7 +77,7 @@ function Question() {
                     className="text-icon-gray text-2xl mr-6"
                   />
                   <div className="border-dotted bg-gray-300 h-8 w-[0.03rem]"></div>
-                  <SwitchSelect />
+                  <SwitchSelect index={index} />
                 </div>
               </div>
             </div>

@@ -1,23 +1,30 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 interface SwitchState {
-  isChecked: boolean;
+  [key: number]: {
+    isChecked: boolean;
+  };
 }
-const initialState: SwitchState = {
-  isChecked: false,
-};
+const initialState: SwitchState = {};
 
 export const switchSlice = createSlice({
   name: "switch",
   initialState,
   reducers: {
-    toggleSwitch: (state) => {
-      state.isChecked = !state.isChecked;
+    toggleSwitch: (state, action: PayloadAction<{ index: number }>) => {
+      const { index } = action.payload;
+      if (state[index]) {
+        state[index].isChecked = !state[index].isChecked;
+      } else {
+        state[index] = {
+          isChecked: true,
+        };
+      }
     },
   },
 });
 
 export const { toggleSwitch } = switchSlice.actions;
-export const selectSwitchState = (state: RootState) => state.switch.isChecked;
-export const switchReducer = switchSlice.reducer;
+export const selectSwitchState = (state: RootState, index: number) =>
+  state.switch[index] ? state.switch[index].isChecked : false;

@@ -1,3 +1,4 @@
+import React from "react";
 import Switch from "@mui/material/Switch";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -7,12 +8,18 @@ import {
   selectSwitchState,
   toggleSwitch,
 } from "../../redux/slices/switchSlice";
-export default function SwitchSelect() {
+import { RootState } from "../../redux/store";
+interface SwitchSelectProps {
+  index: number;
+}
+const SwitchSelect: React.FC<SwitchSelectProps> = ({ index }) => {
   const dispatch = useDispatch();
-  const isChecked = useSelector(selectSwitchState);
+  const isChecked = useSelector((state: RootState) =>
+    selectSwitchState(state, index),
+  );
 
   const handleSwitchToggle = () => {
-    dispatch(toggleSwitch());
+    dispatch(toggleSwitch({ index }));
   };
   return (
     <div className="mx-3">
@@ -34,4 +41,5 @@ export default function SwitchSelect() {
       </FormControl>
     </div>
   );
-}
+};
+export default SwitchSelect;
