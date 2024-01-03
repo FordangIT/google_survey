@@ -3,7 +3,7 @@ import Question from "../components/Main/Question";
 import AddPreview from "../components/Main/AddPreview";
 const Main = () => {
   return (
-    <div className="w-screen h-screen bg-light-purple ">
+    <div className="w-screen h-100% bg-light-purple ">
       <Title />
       <AddPreview />
       <Question />
