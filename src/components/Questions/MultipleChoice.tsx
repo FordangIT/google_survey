@@ -7,33 +7,34 @@ import {
   updateOptionValue,
 } from "../../redux/slices/optionSlice";
 import { ChangeEvent } from "react";
-function MultipleChoice() {
+
+function MultipleChoice({ qIdx }: { qIdx: number }) {
   const dispatch = useDispatch();
-  const options = useSelector((state: RootState) => state.option.options);
+  const options = useSelector(
+    (state: RootState) => state.option.options[qIdx] || [],
+  );
 
   const handlerAddOption = () => {
-    const lastIndex = Math.max(...options.map((el) => el.index), 0);
-    const newOption = {
-      index: lastIndex + 1,
-    };
-    dispatch(addOption(newOption));
+    dispatch(addOption({ qIdx }));
   };
 
-  const handlerRemoveOption = (index: number) => {
-    dispatch(removeOption(index));
+  const handlerRemoveOption = (optionIndex: number) => {
+    dispatch(removeOption({ qIdx, optionIdx: optionIndex }));
   };
 
   const handleOptionChange = (
     event: ChangeEvent<HTMLInputElement>,
-    index: number,
+    optionIndex: number,
   ) => {
     const newValue: string = event.target.value;
-    dispatch(updateOptionValue({ index, value: newValue }));
+    dispatch(
+      updateOptionValue({ qIdx, optionIdx: optionIndex, value: newValue }),
+    );
   };
   return (
     <>
-      {options.map((option, index: number) => (
-        <div key={index}>
+      {options.map((option) => (
+        <div key={option.index}>
           <div className="flex">
             <FaRegCircle />
             <input
@@ -43,7 +44,7 @@ function MultipleChoice() {
               onChange={(e) => handleOptionChange(e, option.index)}
             ></input>
           </div>
-          <div onClick={() => handlerRemoveOption(index)}>삭제버튼</div>
+          <div onClick={() => handlerRemoveOption(option.index)}>삭제버튼</div>
         </div>
       ))}
       <div className="flex" onClick={handlerAddOption}>

@@ -41,7 +41,7 @@ function Question() {
               selectedComponent = <Long />;
               break;
             case 30:
-              selectedComponent = <MultipleChoice />;
+              selectedComponent = <MultipleChoice qIdx={index} />;
               break;
             case 40:
               selectedComponent = <Checkbox />;

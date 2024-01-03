@@ -1,45 +1,53 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { produce } from "immer";
-
 interface Option {
   index: number;
-  value: string; // Each option will have a value
+  value: string;
 }
 
 interface OptionState {
-  options: Option[];
+  options: { [key: number]: Option[] };
 }
 
 const initialState: OptionState = {
-  options: [{ index: 1, value: "" }], // Initial value set as an empty string
+  options: { 0: [{ index: 1, value: "" }] },
 };
 
 export const optionSlice = createSlice({
   name: "option",
   initialState,
   reducers: {
-    addOption: (state, action: PayloadAction<{ index: number }>) => {
-      return produce(state, (draftState) => {
-        draftState.options.push({ index: action.payload.index, value: "" });
+    addOption: (state, action: PayloadAction<{ qIdx: number }>) => {
+      const questionOptions = state.options[action.payload.qIdx];
+      const lastIndex = Math.max(...questionOptions.map((el) => el.index), 0);
+      state.options[action.payload.qIdx].push({
+        index: lastIndex + 1,
+        value: "",
       });
     },
-    removeOption: (state, action: PayloadAction<number>) => {
-      return produce(state, (draftState) => {
-        draftState.options.splice(action.payload, 1);
-      });
+    removeOption: (
+      state,
+      action: PayloadAction<{ qIdx: number; optionIdx: number }>,
+    ) => {
+      const questionOptions = state.options[action.payload.qIdx];
+      const indexToRemove = questionOptions.findIndex(
+        (opt) => opt.index === action.payload.optionIdx,
+      );
+      if (indexToRemove !== -1) {
+        state.options[action.payload.qIdx].splice(indexToRemove, 1);
+      }
     },
     updateOptionValue: (
       state,
-      action: PayloadAction<{ index: number; value: string }>,
+      action: PayloadAction<{ qIdx: number; optionIdx: number; value: string }>,
     ) => {
-      return produce(state, (draftState) => {
-        const optionToUpdate = draftState.options.find(
-          (opt) => opt.index === action.payload.index,
-        );
-        if (optionToUpdate) {
-          optionToUpdate.value = action.payload.value;
-        }
-      });
+      const { qIdx, optionIdx, value } = action.payload;
+      const questionOptions = state.options[qIdx];
+      const optionToUpdate = questionOptions.find(
+        (opt) => opt.index === optionIdx,
+      );
+      if (optionToUpdate) {
+        optionToUpdate.value = value;
+      }
     },
   },
 });
