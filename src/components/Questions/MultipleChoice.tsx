@@ -7,6 +7,7 @@ import {
   updateOptionValue,
 } from "../../redux/slices/optionSlice";
 import { ChangeEvent } from "react";
+import { MdOutlineCancel } from "react-icons/md";
 
 function MultipleChoice({ qIdx }: { qIdx: number }) {
   const dispatch = useDispatch();
@@ -32,25 +33,34 @@ function MultipleChoice({ qIdx }: { qIdx: number }) {
     );
   };
   return (
-    <>
-      {options.map((option) => (
-        <div key={option.index}>
-          <div className="flex">
-            <FaRegCircle />
-            <input
-              type="text"
-              placeholder="옵션"
-              value={option.value}
-              onChange={(e) => handleOptionChange(e, option.index)}
-            ></input>
+    <div className="flex-col w-full">
+      <div className="flex-col ">
+        {options.map((option) => (
+          <div key={option.index} className="flex ">
+            <div className="flex basis-[89.2857143%]">
+              <FaRegCircle className="text-gray-300 text-2xl my-2 mr-3" />
+              <input
+                type="text"
+                placeholder="옵션을 작성하세요"
+                value={option.value}
+                onChange={(e) => handleOptionChange(e, option.index)}
+                className="placeholder-black text-lg"
+              ></input>
+            </div>
+            <MdOutlineCancel
+              onClick={() => handlerRemoveOption(option.index)}
+              className="text-icon-gray text-2xl basis-[10.7141857%]"
+            />
           </div>
-          <div onClick={() => handlerRemoveOption(option.index)}>삭제버튼</div>
-        </div>
-      ))}
-      <div className="flex" onClick={handlerAddOption}>
-        <FaRegCircle /> 옵션 추가
+        ))}
       </div>
-    </>
+      <div className="flex my-2 items-center" onClick={handlerAddOption}>
+        <FaRegCircle className="text-gray-300 text-2xl mr-3" />
+        <p className="text-gray-500 text-lg hover:underline hover:text-gray-500">
+          옵션 추가
+        </p>
+      </div>
+    </div>
   );
 }
 export default MultipleChoice;
