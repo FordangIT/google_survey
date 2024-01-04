@@ -10,7 +10,7 @@ interface QuestionState {
 }
 
 const initialState: QuestionState = {
-  questions: [{ index: 1 }],
+  questions: [{ index: 0 }],
 };
 
 export const questionSlice = createSlice({
@@ -23,6 +23,7 @@ export const questionSlice = createSlice({
       });
     },
     removeQuestion: (state, action: PayloadAction<number>) => {
+      console.log(state, action, "removeQuestion");
       return produce(state, (draftState) => {
         draftState.questions.splice(action.payload, 1);
       });

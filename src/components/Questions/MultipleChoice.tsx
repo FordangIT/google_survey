@@ -14,7 +14,6 @@ function MultipleChoice({ qIdx }: { qIdx: number }) {
   const options = useSelector(
     (state: RootState) => state.option.options[qIdx] || [],
   );
-
   const handlerAddOption = () => {
     dispatch(addOption({ qIdx }));
   };
@@ -35,20 +34,20 @@ function MultipleChoice({ qIdx }: { qIdx: number }) {
   return (
     <div className="flex-col w-full">
       <div className="flex-col ">
-        {options.map((option) => (
-          <div key={option.index} className="flex ">
+        {options.map((option, optionIdx) => (
+          <div key={optionIdx} className="flex ">
             <div className="flex basis-[89.2857143%]">
               <FaRegCircle className="text-gray-300 text-2xl my-2 mr-3" />
               <input
                 type="text"
                 placeholder="옵션을 작성하세요"
                 value={option.value}
-                onChange={(e) => handleOptionChange(e, option.index)}
+                onChange={(e) => handleOptionChange(e, optionIdx)}
                 className="placeholder-black text-lg"
               ></input>
             </div>
             <MdOutlineCancel
-              onClick={() => handlerRemoveOption(option.index)}
+              onClick={() => handlerRemoveOption(optionIdx)}
               className="text-icon-gray text-2xl basis-[10.7141857%]"
             />
           </div>

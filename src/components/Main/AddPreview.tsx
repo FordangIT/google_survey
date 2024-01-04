@@ -17,7 +17,7 @@ function AddPreview() {
       index: lastIndex + 1,
     };
     dispatch(addQuestion(newQuestionData));
-    console.log(newQuestionData);
+    console.log(newQuestionData, "newQuestionData");
   };
 
   return (

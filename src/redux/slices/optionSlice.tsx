@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { produce } from "immer";
 interface Option {
   index: number;
   value: string;
@@ -9,7 +10,7 @@ interface OptionState {
 }
 
 const initialState: OptionState = {
-  options: { 0: [{ index: 1, value: "" }] },
+  options: { 0: [{ index: 0, value: "" }] },
 };
 
 export const optionSlice = createSlice({
@@ -17,11 +18,15 @@ export const optionSlice = createSlice({
   initialState,
   reducers: {
     addOption: (state, action: PayloadAction<{ qIdx: number }>) => {
-      const questionOptions = state.options[action.payload.qIdx];
-      const lastIndex = Math.max(...questionOptions.map((el) => el.index), 0);
-      state.options[action.payload.qIdx].push({
-        index: lastIndex + 1,
-        value: "",
+      return produce(state, (draftState) => {
+        const { qIdx } = action.payload;
+        if (!draftState.options[qIdx]) {
+          draftState.options[qIdx] = [{ index: 0, value: "" }];
+        } else {
+          const lastIndex = draftState.options[qIdx].length - 1;
+          const newIndex = draftState.options[qIdx][lastIndex].index + 1;
+          draftState.options[qIdx].push({ index: newIndex, value: "" });
+        }
       });
     },
     removeOption: (
