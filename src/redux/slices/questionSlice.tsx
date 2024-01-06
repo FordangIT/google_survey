@@ -19,15 +19,27 @@ export const questionSlice = createSlice({
   reducers: {
     addQuestion: (state, action: PayloadAction<{ index: number }>) => {
       return produce(state, (draftState) => {
-        draftState.questions.push(action.payload);
+        const { index } = action.payload;
+        const maxIndex = draftState.questions.reduce((max, question) => {
+          return question.index > max ? question.index : max;
+        }, 0);
+        const newQuestion: Question = {
+          index: maxIndex + 1,
+        };
+        draftState.questions.splice(index, 0, newQuestion);
       });
     },
-    removeQuestion: (state, action: PayloadAction<number>) => {
-      console.log(state, action, "removeQuestion");
-      return produce(state, (draftState) => {
-        draftState.questions.splice(action.payload, 1);
-      });
+    removeQuestion: (state, action: PayloadAction<{ index: number }>) => {
+      const { index } = action.payload;
+      const questionAtIndex = state.questions[index];
+      if (questionAtIndex) {
+        const updatedQuestions = state.questions.filter(
+          (_, idx) => idx !== index,
+        );
+        state.questions = updatedQuestions;
+      }
     },
+    // copyQuestion: (state, action: PayloadAction<{ index: number }>) => {},
   },
 });
 
