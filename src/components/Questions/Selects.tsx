@@ -45,7 +45,6 @@ function Selects({ index, className }: SelectProps) {
           <div>단답형</div>
         </MenuItem>
         <MenuItem value={20} className="h-14">
-          {" "}
           <BsBodyText className="w-6 h-6 text-icon-gray mr-3" />
           장문형
         </MenuItem>
