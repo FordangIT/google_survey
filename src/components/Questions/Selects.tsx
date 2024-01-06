@@ -38,7 +38,7 @@ function Selects({ index, className }: SelectProps) {
         value={String(selectedType)}
         label="type"
         onChange={handleChange}
-        className="h-16" // 이 부분이 가로 정렬 해야할 것 아님 바로 밑 줄에서
+        className="h-16"
       >
         <MenuItem value={10} className="h-14">
           <MdOutlineShortText className="w-6 h-6 text-icon-gray mr-3" />
