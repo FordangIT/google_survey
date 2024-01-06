@@ -3,23 +3,8 @@ import { FiPlusCircle } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { addQuestion } from "../../redux/slices/questionSlice";
 import { RootState } from "../../redux/store";
-import { QUESTION_TYPES } from "../../constants";
 import { useNavigate } from "react-router-dom";
 function AddPreview() {
-  const newQuestion = (newId: string) => ({
-    id: newId,
-    type: QUESTION_TYPES.ONE_CHOICE,
-    questionContent: "",
-    isNecessary: false,
-    options: [
-      {
-        id: 1,
-        option: "옵션 1",
-      },
-    ],
-    answers: [],
-    narrativeAnswer: "",
-  });
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const questions = useSelector(
@@ -30,7 +15,6 @@ function AddPreview() {
       index: questions.length,
     };
     dispatch(addQuestion(newQuestionData));
-    console.log(newQuestionData, "newQuestionData 이게 index일걸");
   };
   const handlePreview = () => {
     navigate("/preview");
