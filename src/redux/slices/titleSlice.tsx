@@ -5,8 +5,8 @@ interface TitleState {
   description: string;
 }
 const initialState: TitleState = {
-  title: "",
-  description: "",
+  title: "제목 없는 설문지",
+  description: "설명 없는 설문지",
 };
 
 export const titleSlice = createSlice({
