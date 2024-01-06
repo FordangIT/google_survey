@@ -7,7 +7,7 @@ function Title() {
   const dispatch = useDispatch();
   const title = useSelector((state: RootState) => state.title.title);
   const description = useSelector(
-    (state: RootState) => state.title.description
+    (state: RootState) => state.title.description,
   );
 
   const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -23,8 +23,8 @@ function Title() {
   return (
     <div className="flex justify-center">
       <div className="pt-3">
-        <div className="w-[855px] h-3 bg-dark-purple rounded-t-lg"></div>
-        <div className="w-[855px] h-36 bg-white rounded-b-lg flex flex-col">
+        <div className=" w-[455px] md:w-[855px]  h-3 bg-dark-purple rounded-t-lg "></div>
+        <div className=" w-[455px] md:w-[855px] h-36 bg-white rounded-b-lg flex flex-col">
           <input
             type="text"
             placeholder="제목 없는 설문지"
