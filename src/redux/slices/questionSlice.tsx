@@ -3,6 +3,7 @@ import { produce } from "immer";
 
 interface Question {
   index: number;
+  title?: string;
 }
 
 interface QuestionState {
@@ -10,13 +11,21 @@ interface QuestionState {
 }
 
 const initialState: QuestionState = {
-  questions: [{ index: 0 }],
+  questions: [{ index: 0, title: "" }],
 };
 
 export const questionSlice = createSlice({
   name: "questions",
   initialState,
   reducers: {
+    updateTitle: (
+      state,
+      action: PayloadAction<{ index: number; title: string }>,
+    ) => {
+      const updatedTitle = action.payload.title;
+      const index = action.payload.index;
+      state.questions[index].title = updatedTitle;
+    },
     addQuestion: (state, action: PayloadAction<{ index: number }>) => {
       return produce(state, (draftState) => {
         const { index } = action.payload;
@@ -42,24 +51,22 @@ export const questionSlice = createSlice({
         state.questions.splice(indexToRemove, 1);
       }
     },
-    copyQuestion: (
-      state,
-      action: PayloadAction<{ qIdx: number; index: number }>,
-    ) => {
-      return produce(state, (draftState) => {
-        const { qIdx, index } = action.payload;
-        const maxIndex = draftState.questions.reduce((max, question) => {
-          return question.index > max ? question.index : max;
-        }, 0);
-        const newQuestion: Question = {
-          index: index + 1,
-        };
-        draftState.questions.splice(index, 0, newQuestion);
-      });
+    copyQuestion: (state, action: PayloadAction<{ index: number }>) => {
+      const { index } = action.payload;
+
+      // 복사할 질문의 위치
+      const currentQuestion = state.questions[index];
+
+      // 현재 questions 배열의 최대 인덱스 찾기
+      const maxIndex = Math.max(...state.questions.map((q) => q.index));
+
+      // 복사된 질문 생성 및 추가
+      const copiedQuestion = { ...currentQuestion, index: maxIndex + 1 };
+      state.questions.splice(index + 1, 0, copiedQuestion);
     },
   },
 });
 
-export const { addQuestion, removeQuestion, copyQuestion } =
+export const { updateTitle, addQuestion, removeQuestion, copyQuestion } =
   questionSlice.actions;
 export default questionSlice.reducer;
