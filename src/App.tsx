@@ -1,7 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Main from "./pages/Main";
 import Preview from "./pages/Preview";
-import Container from "./components/Dnd/Container";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 const withLayout = (Component: React.FC): JSX.Element => {
@@ -19,10 +18,6 @@ const router = createBrowserRouter([
   {
     path: "/preview",
     element: withLayout(Preview),
-  },
-  {
-    path: "/container",
-    element: withLayout(Container),
   },
 ]);
 const App: React.FC = () => {

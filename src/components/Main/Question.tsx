@@ -9,15 +9,29 @@ import { RootState } from "../../redux/store";
 import { MdOutlineContentCopy } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import SwitchSelect from "../Questions/SwitchSelect";
-import { removeQuestion, copyQuestion } from "../../redux/slices/questionSlice";
+import {
+  updateTitle,
+  removeQuestion,
+  copyQuestion,
+} from "../../redux/slices/questionSlice";
+import { ChangeEvent } from "react";
 
 function Question() {
   const dispatch = useDispatch();
   const questions = useSelector(
     (state: RootState) => state.questions.questions || [],
   );
-  const handleCopyQuestion = (qIdx: number, index: number) => {
-    dispatch(copyQuestion({ qIdx, index }));
+
+  const handleTitleChange = (
+    index: number,
+    event: ChangeEvent<HTMLInputElement>,
+  ) => {
+    const newTitle: string = event.target.value;
+    dispatch(updateTitle({ index, title: newTitle }));
+  };
+  const handleCopyQuestion = (index: number) => {
+    dispatch(copyQuestion({ index }));
+    console.log(index, "복사할 index");
   };
 
   const handleRemoveQuestion = (index: number) => {
@@ -29,6 +43,7 @@ function Question() {
     (state: RootState) => state.type.indexedTypes,
   );
   console.log(questions, "남아 있는 배열확인");
+
   return (
     <div className="flex justify-center">
       <div className="flex-col">
@@ -65,6 +80,8 @@ function Question() {
                 <input
                   type="text"
                   placeholder="제목없는 질문"
+                  value={question.title}
+                  onChange={(e) => handleTitleChange(question.index, e)}
                   className="w-[14rem] md:w-[24rem] lg:w-[35rem] h-16 bg-gray-50 hover:bg-gray-100 placeholder-black md:my-0 md:mx-2"
                 />
                 <Selects
@@ -79,7 +96,7 @@ function Question() {
               <div className="flex justify-center mx-3 h-[4.5rem]">
                 <div className="w-11/12 border-t-2 border-gray-300 flex justify-end items-center">
                   <MdOutlineContentCopy
-                    onClick={() => handleCopyQuestion(question.index, index)}
+                    onClick={() => handleCopyQuestion(question.index)}
                     className="text-icon-gray text-3xl mx-6 rounded-full p-1 hover:bg-gray-200 transition duration-300"
                   />
                   <RiDeleteBin6Line
