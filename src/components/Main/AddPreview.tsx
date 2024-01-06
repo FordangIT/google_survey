@@ -14,6 +14,7 @@ function AddPreview() {
     const newQuestionData = {
       index: questions.length,
     };
+    console.log(newQuestionData, "들어갈 index");
     dispatch(addQuestion(newQuestionData));
   };
   const handlePreview = () => {
@@ -21,12 +22,15 @@ function AddPreview() {
   };
 
   return (
-    <div className="w-14 h-24 bg-white rounded-md grid grid-cols-1 place-items-center">
+    <div className="w-14 h-24 bg-white rounded-md grid grid-cols-1 place-items-center ml-3 mt-10 ">
       <FiPlusCircle
-        className="text-icon-gray text-2xl"
+        className="text-icon-gray text-3xl rounded-full p-1 hover:bg-gray-200 transition duration-300"
         onClick={handleAddQuestion}
       />
-      <IoEyeSharp className="text-icon-gray text-2xl" onClick={handlePreview} />
+      <IoEyeSharp
+        className="text-icon-gray text-3xl rounded-full p-1 hover:bg-gray-200 transition duration-300"
+        onClick={handlePreview}
+      />
     </div>
   );
 }

@@ -9,15 +9,16 @@ import { RootState } from "../../redux/store";
 import { MdOutlineContentCopy } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import SwitchSelect from "../Questions/SwitchSelect";
-import { addQuestion, removeQuestion } from "../../redux/slices/questionSlice";
+import { removeQuestion, copyQuestion } from "../../redux/slices/questionSlice";
+
 function Question() {
   const dispatch = useDispatch();
   const questions = useSelector(
     (state: RootState) => state.questions.questions || [],
   );
-  // const handleCopyQuestion = (index: number) => {
-  //   dispatch(copyQuestion({index}));
-  // };
+  const handleCopyQuestion = (qIdx: number, index: number) => {
+    dispatch(copyQuestion({ qIdx, index }));
+  };
 
   const handleRemoveQuestion = (index: number) => {
     dispatch(removeQuestion({ index }));
@@ -57,14 +58,14 @@ function Question() {
 
           return (
             <div
-              key={index}
-              className="w-[455px] md:w-[855px] bg-white mt-4 rounded-lg flex-col pt-4"
+              key={question.index}
+              className="w-[455px] md:w-[655px] lg:w-[855px] bg-white mt-4 rounded-lg flex-col pt-4"
             >
               <div className="flex-row justify-center items-center mt-7 pl-7 md:pl-10">
                 <input
                   type="text"
                   placeholder="제목없는 질문"
-                  className="w-[14rem] md:w-[35rem] h-16 bg-gray-50 hover:bg-gray-100 placeholder-black md:my-0 md:mx-2"
+                  className="w-[14rem] md:w-[24rem] lg:w-[35rem] h-16 bg-gray-50 hover:bg-gray-100 placeholder-black md:my-0 md:mx-2"
                 />
                 <Selects
                   index={question.index}
@@ -78,12 +79,12 @@ function Question() {
               <div className="flex justify-center mx-3 h-[4.5rem]">
                 <div className="w-11/12 border-t-2 border-gray-300 flex justify-end items-center">
                   <MdOutlineContentCopy
-                    // onClick={() => handleCopyQuestion(index)}
-                    className="text-icon-gray text-2xl mx-6"
+                    onClick={() => handleCopyQuestion(question.index, index)}
+                    className="text-icon-gray text-3xl mx-6 rounded-full p-1 hover:bg-gray-200 transition duration-300"
                   />
                   <RiDeleteBin6Line
                     onClick={() => handleRemoveQuestion(question.index)}
-                    className="text-icon-gray text-2xl mr-6"
+                    className="text-icon-gray text-3xl mr-6 rounded-full p-1 hover:bg-gray-200 transition duration-300"
                   />
                   <div className="border-dotted bg-gray-300 h-8 w-[0.03rem]"></div>
                   <SwitchSelect index={question.index} />
